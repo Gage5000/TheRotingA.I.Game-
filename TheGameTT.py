@@ -1,5 +1,5 @@
 import random
-
+from PIL import Image
 
 # Character Classes
 class Character:
@@ -133,6 +133,9 @@ def game_story(player):
     while story_stage <= 5 and player.health > 0:
         print(f"\n--- Stage {story_stage} ---")
         if story_stage == 1:
+            # Load and display the image
+            img = Image.open("Screenshot 2024-11-07 125650.png")
+            img.show()
             print(f"{player.name} finds a crossroad. To the left, a dark forest. To the right, a mountain trail.")
             choice = input("Choose your path: [forest, mountain] ").lower()
             if choice == "forest":
@@ -140,24 +143,36 @@ def game_story(player):
                 if combat(player, enemy):
                     player.inventory.add_item("Health Potion")
                     print(f"{player.name} found a Health Potion!")
-            else:
+            else:  # Mountain path with Bandit fight
                 enemy = Enemy("Bandit", 40, 12)
-                combat(player, enemy)
+                if combat(player, enemy):
+                    player.inventory.add_item("Health Potion")
+                    print(f"{player.name} found a Health Potion!")
 
         elif story_stage == 2:
+            # Load and display the image
+            img = Image.open("Screenshot 2024-11-07 125713.png")
+            img.show()
             print(f"{player.name} arrives at a village under siege.")
             choice = input("Do you [help] the villagers or [ignore] them? ").lower()
             if choice == "help":
                 enemy = Enemy("Ogre", 50, 15)
                 combat(player, enemy)
-            player.inventory.add_item("Magic Ring")
+                player.inventory.add_item("Magic Ring")
+                player.inventory.add_item("Health Potion")
 
         elif story_stage == 3:
+            # Load and display the image
+            img = Image.open("Screenshot 2024-11-07 125751.png")
+            img.show()
             print(f"{player.name} reaches the castle where the evil overlord awaits.")
             enemy = Enemy("Overlord", 80, 20)
             combat(player, enemy)
 
         elif story_stage == 4:
+            # Load and display the image
+            img = Image.open("Screenshot 2024-11-07 125953.png")
+            img.show()
             print(f"{player.name} encounters a cursed swamp.")
             choice = input("Do you [enter] the swamp or [avoid] it? ").lower()
             if choice == "enter":
@@ -167,6 +182,9 @@ def game_story(player):
                 print(f"{player.name} found an Antidote!")
 
         elif story_stage == 5:
+            # Load and display the image
+            img = Image.open("Screenshot 2024-11-07 130022.png")
+            img.show()
             print(f"{player.name} reaches the dragon's lair.")
             choice = input("Do you [fight] the dragon or [negotiate]? ").lower()
             if choice == "fight":
