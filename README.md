@@ -3,7 +3,7 @@
 This is a text-based RPG where players choose a character class, explore locations, battle enemies, and make choices that affect the outcome.
 
 ## How to Run
-Run the game using Python 3. Required packages: none.
+Run the game using Python 3. Required packages: PIL.
 
 ## Gameplay
 - Choose your character.
