@@ -13,16 +13,16 @@ class Character:
 
     def set_stats(self):
         if self.char_class == "Warrior":
-            self.strength = 15
+            self.strength = 20
             self.agility = 10
             self.magic = 5
         elif self.char_class == "Mage":
             self.strength = 5
             self.agility = 10
-            self.magic = 15
+            self.magic = 20
         elif self.char_class == "Rogue":
             self.strength = 10
-            self.agility = 15
+            self.agility = 35
             self.magic = 5
 
     def show_stats(self):
@@ -36,9 +36,9 @@ class Character:
             damage = random.randint(20, 40)
             enemy.health -= damage
             return f"{self.name} used the Magic Ring and dealt {damage} damage to {enemy.name}!"
-        elif item == "Antidote":
+        elif item == "Greater Health Potion":
             self.health = min(self.health + 70, self.max_health)
-            return f"{self.name} used the Antidote and restored 70 health points!"
+            return f"{self.name} used the Greater Health Potion and restored 70 health points!"
         else:
             return f"{item} has no effect."
 
@@ -85,15 +85,21 @@ class Enemy:
 def combat(player, enemy):
     print(f"A wild {enemy.name} appears!")
     while player.health > 0 and enemy.health > 0:
-        action = input(f"{player.name}, choose an action: [Attack, Defend, Magic, Inventory] ").lower()
+        action = input(f"{player.name}, [Attack, Dodge, Magic, Inventory] choose an action:").lower()
 
         if action == "attack":
             damage = random.randint(5, player.strength)
             enemy.health -= damage
             print(f"{player.name} dealt {damage} damage to {enemy.name}. Enemy health: {enemy.health}")
 
-        elif action == "defend":
-            print(f"{player.name} braces against the attack.")
+        elif action == "dodge":
+            # Calculate dodge chance based on player's agility
+            dodge_chance = min(player.agility * 2, 95)  # cap at 95% for balance
+            if random.randint(1, 100) <= dodge_chance:
+                print(f"{player.name} successfully dodged the attack!")
+                continue  # Skip enemy's attack since dodge was successful
+            else:
+                print(f"{player.name} attempted to dodge but failed.")
 
         elif action == "magic" and player.char_class == "Mage":
             damage = random.randint(5, player.magic + 10)
@@ -137,14 +143,14 @@ def game_story(player):
             img = Image.open("Screenshot 2024-11-07 125650.png")
             img.show()
             print(f"{player.name} finds a crossroad. To the left, a dark forest. To the right, a mountain trail.")
-            choice = input("Choose your path: [forest, mountain] ").lower()
+            choice = input("[forest, mountain] Choose your path:").lower()
             if choice == "forest":
-                enemy = Enemy("Goblin", 30, 10)
+                enemy = Enemy("Goblin", 40, 9)
                 if combat(player, enemy):
                     player.inventory.add_item("Health Potion")
                     print(f"{player.name} found a Health Potion!")
             else:  # Mountain path with Bandit fight
-                enemy = Enemy("Bandit", 40, 12)
+                enemy = Enemy("Bandit", 30, 15)
                 if combat(player, enemy):
                     player.inventory.add_item("Health Potion")
                     print(f"{player.name} found a Health Potion!")
@@ -154,7 +160,7 @@ def game_story(player):
             img = Image.open("Screenshot 2024-11-07 125713.png")
             img.show()
             print(f"{player.name} arrives at a village under siege.")
-            choice = input("Do you [help] the villagers or [ignore] them? ").lower()
+            choice = input("Do you [help] the villagers or [ignore] them? Choose your action:").lower()
             if choice == "help":
                 enemy = Enemy("Ogre", 50, 15)
                 combat(player, enemy)
@@ -166,7 +172,7 @@ def game_story(player):
             img = Image.open("Screenshot 2024-11-07 125751.png")
             img.show()
             print(f"{player.name} reaches the castle where the evil overlord awaits.")
-            enemy = Enemy("Overlord", 80, 20)
+            enemy = Enemy("Overlord", 70, 20)
             combat(player, enemy)
 
         elif story_stage == 4:
@@ -176,10 +182,10 @@ def game_story(player):
             print(f"{player.name} encounters a cursed swamp.")
             choice = input("Do you [enter] the swamp or [avoid] it? ").lower()
             if choice == "enter":
-                enemy = Enemy("Poisonous Serpent", 60, 15)
+                enemy = Enemy("Poisonous Serpent", 30, 25)
                 combat(player, enemy)
-                player.inventory.add_item("Antidote")
-                print(f"{player.name} found an Antidote!")
+                player.inventory.add_item("Greater Health Potion")
+                print(f"{player.name} found an Greater Health Potion!")
 
         elif story_stage == 5:
             # Load and display the image
